@@ -24,5 +24,5 @@ arg[2]: File Format.
 
 arg[3]: Document Template.
 
-* ![a](./assets/0.png)
-* ![b](./assets/1.png) *default*
+* a ![a](./assets/0.png)
+* b ![b](./assets/1.png) *default*
