@@ -2,7 +2,7 @@
   "profiles": {
     "swagger2word": {
       "commandName": "Project",
-      "commandLineArgs": "d:/mywebapi.json\r\n3\r\na"
+      "commandLineArgs": "d:/mywebapi.json\r\n3\r\nb"
     }
   }
 }

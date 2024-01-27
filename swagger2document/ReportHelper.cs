@@ -48,51 +48,35 @@ internal class ReportHelper
         {
             var reportModel = new ReportModel();
             reportModel.Url = item.Key;
-            if (item.Value.Operations != null)
+            if (item.Value.Operations == null) continue;
+
+            foreach (var operation in item.Value.Operations)
             {
-                foreach (var operation in item.Value.Operations)
+                reportModel.MethodName = operation.Key.ToString();
+                reportModel.Tag = string.Join(Environment.NewLine, operation.Value.Tags.Select(c => c.Name));
+                reportModel.Summary = operation.Value.Summary;
+                reportModel.Description = operation.Value.Description;
+                if (operation.Value.RequestBody != null)
                 {
-                    reportModel.MethodName = operation.Key.ToString();
-                    foreach (var tag in operation.Value.Tags)
+                    reportModel.RequestType = string.Join(',', operation.Value.RequestBody.Content.Keys);
+                }
+                if (operation.Value.Parameters?.Count > 0)
+                {
+                    reportModel.ParameterItems.AddRange(
+                    operation.Value.Parameters.Select(parameter => new ParametersItem
                     {
-                        reportModel.Tag += tag.Name + Environment.NewLine;
-                    }
-                    reportModel.Summary = operation.Value.Summary;
-                    reportModel.Description = operation.Value.Description;
-                    if (operation.Value.RequestBody != null)
-                    {
-                        reportModel.RequestType = string.Join(',', operation.Value.RequestBody.Content.Keys);
-                    }
-                    if (operation.Value.Parameters?.Count > 0)
-                    {
-                        foreach (var parameter in operation.Value.Parameters)
-                        {
-                            var paraitme = new ParametersItem
-                            {
-                                ParaName = parameter.Name,
-                                ParaType = parameter.In?.ToString() ?? "",
-                                ParaRequired = parameter.Required,
-                                ParaDescription = parameter.Description
-                            };
-                            reportModel.ParameterItems.Add(paraitme);
-                        }
-                        reportModel.Parameters = JsonSerializer.Serialize(reportModel.ParameterItems, jsonOptions);
-                    }
+                        ParaName = parameter.Name,
+                        ParaType = parameter.In?.ToString() ?? "",
+                        ParaRequired = parameter.Required,
+                        ParaDescription = parameter.Description
+                    })
+                    );
+                    reportModel.Parameters = JsonSerializer.Serialize(reportModel.ParameterItems, jsonOptions);
                 }
             }
+
             items.Add(reportModel);
         }
-
-        var finallyItems = items.Select(model => new ReportModel
-        {
-            Tag = model.Tag,
-            Summary = model.Summary,
-            Description = model.Description,
-            Url = model.Url,
-            Parameters = model.Parameters,
-            MethodName = model.MethodName,
-            RequestType = model.RequestType,
-        });
 
         if (currentTemplate.Item1.Equals("template2"))
         {
@@ -113,12 +97,13 @@ internal class ReportHelper
                           ParaRequired = paramItem.ParaRequired,
                           ParaDescription = paramItem.ParaDescription,
                       }));
-            report.DataSources.Add(new ReportDataSource("ReportItem", finallyItems.Concat(flattenedItems)));
+            report.DataSources.Add(new ReportDataSource("ReportItem", items.Concat(flattenedItems)));
         }
         else
         {
-            report.DataSources.Add(new ReportDataSource("ReportItem", finallyItems));
+            report.DataSources.Add(new ReportDataSource("ReportItem", items));
         }
+
         report.SetParameters(parameters);
         var result = report.Render(currentFormatter.Value.Item1);
         var outfile = Path.Combine($"Export{currentFormatter.Value.Item2}");
