@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "swagger2document", "swagger2document\swagger2document.csproj", "{513B9A3C-AC7A-4DE9-A9B0-269DEF1C2DBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{0F0CF8CF-2AE6-4B3C-9474-2066A7007A76}"
+	ProjectSection(SolutionItems) = preProject
+		assets\0.png = assets\0.png
+		assets\1.png = assets\1.png
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{513B9A3C-AC7A-4DE9-A9B0-269DEF1C2DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{513B9A3C-AC7A-4DE9-A9B0-269DEF1C2DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{513B9A3C-AC7A-4DE9-A9B0-269DEF1C2DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{513B9A3C-AC7A-4DE9-A9B0-269DEF1C2DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6B39661-45DB-487B-AF91-56D7A72882AC}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,313 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Testapp",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/Cache/AddOrUpdate": {
+            "post": {
+                "tags": [
+                    "Cache"
+                ],
+                "summary": "新增或更新",
+                "description": "### 說明\r\n* 注意1 \r\n* 注意2\r\n[需求詳細說明](https://www.google.com)",
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserDto"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserDto"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Cache/Remove/{key}": {
+            "post": {
+                "tags": [
+                    "Cache"
+                ],
+                "summary": "刪除",
+                "description": "### 說明\r\n* 參考 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Cache/Get": {
+            "get": {
+                "tags": [
+                    "Cache"
+                ],
+                "summary": "查詢",
+                "description": "### 說明\r\n* **重要!!**",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "query",
+                        "description": "",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDto"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDto"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Cache/GetServerInfo": {
+            "get": {
+                "tags": [
+                    "Cache"
+                ],
+                "summary": "查詢伺服器資訊",
+                "description": "### 說明\r\n*函式: ` GiveMeMoney() { var dream=....} `",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedisServer"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedisServer"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedisServer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/WeatherForecast": {
+            "get": {
+                "tags": [
+                    "WeatherForecast"
+                ],
+                "summary": "hello world",
+                "description": "* 早餐要吃",
+                "operationId": "GetWeatherForecast",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/WeatherForecast"
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/WeatherForecast"
+                                    }
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/WeatherForecast"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "DateOnly": {
+                "type": "object",
+                "properties": {
+                    "Year": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "Month": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "Day": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "DayOfWeek": {
+                        "$ref": "#/components/schemas/DayOfWeek"
+                    },
+                    "DayOfYear": {
+                        "type": "integer",
+                        "format": "int32",
+                        "readOnly": true
+                    },
+                    "DayNumber": {
+                        "type": "integer",
+                        "format": "int32",
+                        "readOnly": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "DayOfWeek": {
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ],
+                "type": "integer",
+                "format": "int32"
+            },
+            "RedisServer": {
+                "type": "object",
+                "properties": {
+                    "Configuration": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "InstanceName": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserDto": {
+                "type": "object",
+                "properties": {
+                    "Id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "Name": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "WeatherForecast": {
+                "type": "object",
+                "properties": {
+                    "Date": {
+                        "$ref": "#/components/schemas/DateOnly"
+                    },
+                    "TemperatureC": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "TemperatureF": {
+                        "type": "integer",
+                        "format": "int32",
+                        "readOnly": true
+                    },
+                    "Summary": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            }
+        }
+    }
+}
