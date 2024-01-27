@@ -55,7 +55,7 @@ async Task<string> GetJsonFromRemoteAsync()
     };
 
     var client = new HttpClient(handler);
-    HttpResponseMessage response = await client.GetAsync(josnSource);
+    var response = await client.GetAsync(josnSource);
     response.EnsureSuccessStatusCode();
     var responseBody = await response.Content.ReadAsStringAsync();
     return responseBody;
