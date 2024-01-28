@@ -2,6 +2,7 @@
 using Microsoft.Reporting.NETCore;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Text.Unicode;
 
 
@@ -53,9 +54,9 @@ internal class ReportHelper
             foreach (var operation in item.Value.Operations)
             {
                 reportModel.MethodName = operation.Key.ToString();
-                reportModel.Tag = string.Join(Environment.NewLine, operation.Value.Tags.Select(c => c.Name));
-                reportModel.Summary = operation.Value.Summary;
-                reportModel.Description = operation.Value.Description;
+                reportModel.Tag = string.Join(Environment.NewLine, operation.Value.Tags.Select(c => c.Name.RemoveMarkdown()));
+                reportModel.Summary = operation.Value.Summary.RemoveMarkdown();
+                reportModel.Description = operation.Value.Description.RemoveMarkdown();
                 if (operation.Value.RequestBody != null)
                 {
                     reportModel.RequestType = string.Join(',', operation.Value.RequestBody.Content.Keys);
@@ -109,5 +110,40 @@ internal class ReportHelper
         var outfile = Path.Combine($"Export{currentFormatter.Value.Item2}");
         await File.WriteAllBytesAsync(outfile, result);
         return outfile;
+    }
+}
+
+public static class StringExtensions
+{
+    public static string RemoveMarkdown(this string input)
+    {
+        // 移除行內碼塊
+        input = Regex.Replace(input, @"`(.+?)`", "$1");
+
+        // 移除圖片語法
+        input = Regex.Replace(input, @"!\[.*?\]\(.*?\)", "");
+
+        // 移除連結語法
+        input = Regex.Replace(input, @"\[.*?\]\(.*?\)", m => m.Groups[1].Value);
+
+        // 移除強調語法
+        input = Regex.Replace(input, @"(\*\*|__)(.*?)\1", "$2");
+
+        // 移除斜體語法
+        input = Regex.Replace(input, @"(\*|_)(.*?)\1", "$2");
+
+        // 移除列表語法
+        input = Regex.Replace(input, @"^\s*[\-\+\*]\s+", "", RegexOptions.Multiline);
+
+        // 移除區塊引言語法
+        input = Regex.Replace(input, @"^\s*>", "", RegexOptions.Multiline);
+
+        // 移除標題語法
+        input = Regex.Replace(input, @"^\s*#{1,6}\s*", "");
+
+        // 移除水平線語法
+        input = Regex.Replace(input, @"^\s*[-=]{3,}\s*$", "", RegexOptions.Multiline);
+
+        return input.Trim();
     }
 }
