@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using Microsoft.Reporting.NETCore;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -59,7 +60,9 @@ internal class ReportHelper
                 reportModel.Description = operation.Value.Description.RemoveMarkdown();
                 if (operation.Value.RequestBody != null)
                 {
-                    reportModel.RequestType = string.Join(',', operation.Value.RequestBody.Content.Keys);
+                    var requestBody = $"描述:{operation.Value.RequestBody.Description + Environment.NewLine}";
+                    requestBody += $"類型:{string.Join(',', operation.Value.RequestBody.Content.Keys) + Environment.NewLine}";
+                    reportModel.RequestType = requestBody;
                 }
                 if (operation.Value.Parameters?.Count > 0)
                 {
@@ -98,7 +101,15 @@ internal class ReportHelper
                           ParaRequired = paramItem.ParaRequired,
                           ParaDescription = paramItem.ParaDescription,
                       }));
-            report.DataSources.Add(new ReportDataSource("ReportItem", items.Concat(flattenedItems)));
+            items.ForEach(c =>
+            {
+                c.ParaName = flattenedItems?.FirstOrDefault(a => a.Tag.Equals(c.Tag) && a.Url.Equals(c.Url))?.ParaName ?? "";
+                c.ParaType = flattenedItems?.FirstOrDefault(a => a.Tag.Equals(c.Tag) && a.Url.Equals(c.Url))?.ParaType ?? "";
+                c.ParaRequired = flattenedItems?.FirstOrDefault(a => a.Tag.Equals(c.Tag) && a.Url.Equals(c.Url))?.ParaRequired ?? null;
+                c.ParaDescription = flattenedItems?.FirstOrDefault(a => a.Tag.Equals(c.Tag) && a.Url.Equals(c.Url))?.ParaDescription ?? "";
+
+            });
+            report.DataSources.Add(new ReportDataSource("ReportItem", items));
         }
         else
         {
@@ -124,7 +135,7 @@ public static class StringExtensions
         input = Regex.Replace(input, @"!\[.*?\]\(.*?\)", "");
 
         // 移除連結語法
-        input = Regex.Replace(input, @"\[.*?\]\(.*?\)", m => m.Groups[1].Value);
+        input = Regex.Replace(input, @"\[([^]]+)\]\(([^)]+)\)", m => $"{m.Groups[1].Value} ({m.Groups[2].Value})");
 
         // 移除強調語法
         input = Regex.Replace(input, @"(\*\*|__)(.*?)\1", "$2");

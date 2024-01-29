@@ -485,7 +485,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>請求類型</Value>
+                                  <Value>請求內容</Value>
                                   <Style>
                                     <Color>White</Color>
                                   </Style>
